@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   const [tasks, setTask] = useState([
     { id: "task_1", title: "Learn LS", status: 0 },
-    { id: "task_2", title: "Code a Todo List", status: 1 },
+    { id: "task_2", title: "Code a Todo List", status: 0 },
   ])
 
   const [showImcomplete, setShowImcomplete] = useState(true)
@@ -35,12 +35,16 @@ function App() {
   const setTaskStatus = (taskID, status) => {
     setTask(tasks.map((task) => {
       if (task.id === taskID) {
-        console.log(task.id, status)
-        return { ...tasks, status: status };
+        return { ...task, status: status ? 1 : 0 };
       }
       return task;
     }))
   };
+
+  const remmoveTask = (taskID) => {
+    setTask(tasks.filter((task) => task.id !== taskID))
+  }
+
   return (
     <div className="container">
       <h1 className="title">Todo List
@@ -48,7 +52,7 @@ function App() {
       </h1>
       <ul className="task-list">
         {tasks
-          .filter((task) => (showImcomplete === true ? task.status !== 1 : true))
+          .filter((task) => (showImcomplete ? task.status !== 1 : true))
           .map((task) => (
             <li key={task.id} className={task.status === 1 ? "done" : ""}>
               <span className="label">{task.title}</span>
@@ -56,7 +60,7 @@ function App() {
                 <input className="btn-action btn-action-done" type="checkbox"
                   checked={Boolean(task.status)}
                   onChange={(e) => setTaskStatus(task.id, e.target.checked)} />
-                <button className="btn-action btn-action-delete" >❌</button>
+                <button onClick={(e) => remmoveTask(task.id)} className="btn-action btn-action-delete" >❌</button>
               </div>
             </li>
           ))}
