@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Name from './components/Name';
+import Favorite from './components/Favorite';
+import Display from './components/Display';
+import useLocalStorage from './/hook/UseLocalStorage'
 
 function App() {
+  const [name, setName] = useLocalStorage('name')
+  const [language, setLanguage] = useLocalStorage('language')
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <h1>Lifting state up</h1>
+      <Name name={name} setName={setName} />
+      <Favorite language={language} setLanguage={setLanguage} />
+      <Display name={name} language={language} />
     </div>
   );
 }
