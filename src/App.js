@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react'
+import Name from './components/Name';
+import Favorite from './components/Favorite';
+import Display from './components/Display';
+import useLocalStorage from './hook/UseLocalStorage.js'
+import useCounter from './hook/useCounter.js';
 
 function App() {
+  const [name, setName] = useLocalStorage('name')
+  const [language, setLanguage] = useLocalStorage('language')
+  const [uncrement, increment, count] = useCounter('count', 0)
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Name name={name} setName={setName} />
+      <Favorite language={language} setLanguage={setLanguage} />
+      <Display name={name} language={language} />
+      <button onClick={uncrement}>-</button>
+      <span>{count}</span>
+      <button onClick={increment}>+ </button>
     </div>
   );
 }
