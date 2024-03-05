@@ -19,10 +19,16 @@ function App() {
       // Process weather data
       try {
         const url = `${api.base}weather?q=${searchCity}&units=metric&APPID=${api.key}`;
-        const response = await fetchWeatherData(url);
+        const response = await fetch(url);
         const data = await response.json();
-        console.log(response, data)
-        setWeatherInfo(JSON.stringify(data));
+        console.log(data)
+        if (response.ok) {
+          setWeatherInfo(`${data.name} ${data.sys.country} ${data.weather[0].description} ${data.main.temp}`)
+          setErrorMessage("")
+        }
+        else {
+          setErrorMessage(data.message)
+        }
       } catch (error) {
         setErrorMessage(error.message)
       }
@@ -42,7 +48,13 @@ function App() {
         <input type="text" placeholder='City' value={searchInput} onChange={(e) => { setSearchInput(e.target.value) }}></input>
         <button>Search</button>
       </form>
-      <div>{weatherInfo}</div>
+      {loading ? (<div>Loading ...</div>) : (<>
+
+        {errorMessage ? (<div style={{ color: "red" }}>{errorMessage}</div>) : (<div>{weatherInfo}</div>)}
+
+      </>)}
+
+
     </>
   );
 }
